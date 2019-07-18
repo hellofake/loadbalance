@@ -27,7 +27,7 @@ public class RandomWithWeightStategy extends AbstractStrategy {
 
         double small = (smallActiveCount == 0 ? 1 : smallActiveCount)*1;
         double medium = (mediumActiveCount == 0 ? 1 : mediumActiveCount)*2;
-        double large = (largeActiveCount == 0 ? 1 : largeActiveCount)*2.3;
+        double large = (largeActiveCount == 0 ? 1 : largeActiveCount)*3;
 
         int randNumber = rand.nextInt((int)(small + medium + large));
 
