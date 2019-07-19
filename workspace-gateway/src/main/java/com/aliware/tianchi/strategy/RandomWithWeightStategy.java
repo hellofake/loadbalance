@@ -32,9 +32,6 @@ public class RandomWithWeightStategy extends AbstractStrategy {
         double small = (smallActiveCount == 0 ? 1 : smallActiveCount)*smallCPU;
         double medium = (mediumActiveCount == 0 ? 1 : mediumActiveCount)*mediumCPU;
         double large = (largeActiveCount == 0 ? 1 : largeActiveCount)*largeCPU;
-        System.out.println("small cpu"+smallCPU);
-        System.out.println("large cpu"+largeCPU);
-        System.out.println("medium cpu"+mediumCPU);
 
         int randNumber = rand.nextInt((int)(small + medium + large));
 
