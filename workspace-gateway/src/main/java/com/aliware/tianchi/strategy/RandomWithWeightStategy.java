@@ -4,6 +4,8 @@ import com.aliware.tianchi.Constants;
 import org.apache.dubbo.common.URL;
 import org.apache.dubbo.rpc.Invocation;
 
+import static com.aliware.tianchi.Constants.*;
+
 /**
  * Author: eamon
  * Email: eamon@eamon.cc
@@ -20,14 +22,14 @@ public class RandomWithWeightStategy extends AbstractStrategy {
 
     @Override
     public int select(URL url, Invocation invocation) {
-        int smallActiveCount = (int) Constants.longAdderSmall.longValue();
-        int mediumActiveCount = (int) Constants.longAdderMedium.longValue();
-        int largeActiveCount = (int) Constants.longAdderLarge.longValue();
+        int smallActiveCount = (int) longAdderSmall.longValue();
+        int mediumActiveCount = (int) longAdderMedium.longValue();
+        int largeActiveCount = (int) longAdderLarge.longValue();
 
 
-        double small = (smallActiveCount == 0 ? 1 : smallActiveCount)*1;
-        double medium = (mediumActiveCount == 0 ? 1 : mediumActiveCount)*2;
-        double large = (largeActiveCount == 0 ? 1 : largeActiveCount)*3;
+        double small = (smallActiveCount == 0 ? 1 : smallActiveCount)*smallCPU;
+        double medium = (mediumActiveCount == 0 ? 1 : mediumActiveCount)*mediumCPU;
+        double large = (largeActiveCount == 0 ? 1 : largeActiveCount)*largeCPU;
 
         int randNumber = rand.nextInt((int)(small + medium + large));
 

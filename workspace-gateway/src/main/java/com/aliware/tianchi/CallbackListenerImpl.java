@@ -23,15 +23,19 @@ public class CallbackListenerImpl implements CallbackListener {
         synchronized (this) {
             if (threadCountInit) return;
             String[] threadSum = msg.split(":");
+            String[] threadAndCpu = threadSum[1].split(",");
             switch (threadSum[0]) {
                 case "small":
-                    smallProducerThreadSum = Integer.parseInt(threadSum[1]);
+                    smallProducerThreadSum = Integer.parseInt(threadAndCpu[0]);
+                    smallCPU = Integer.parseInt(threadAndCpu[1]);
                     break;
                 case "medium":
-                    mediumProducerThreadSum = Integer.parseInt(threadSum[1]);
+                    mediumProducerThreadSum = Integer.parseInt(threadAndCpu[0]);
+                    mediumCPU = Integer.parseInt(threadAndCpu[1]);
                     break;
                 case "large":
-                    largeProducerThreadSum = Integer.parseInt(threadSum[1]);
+                    largeProducerThreadSum = Integer.parseInt(threadAndCpu[0]);
+                    largeCPU = Integer.parseInt(threadAndCpu[1]);
                     break;
             }
             if (smallProducerThreadSum != 0 && mediumProducerThreadSum != 0 && largeProducerThreadSum != 0) {

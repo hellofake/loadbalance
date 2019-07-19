@@ -22,6 +22,10 @@ public class Constants {
     public static int mediumProducerThreadSum = 0;
     public static int largeProducerThreadSum = 0;
 
+    public static int smallCPU = 0;
+    public static int mediumCPU = 0;
+    public static int largeCPU = 0;
+
     static {
         longAdderLarge.add(0);
         longAdderMedium.add(0);

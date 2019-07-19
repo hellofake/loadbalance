@@ -32,6 +32,6 @@ public class CallbackServiceImpl implements CallbackService {
         String env = System.getProperty("quota");
         ProtocolConfig protocolConfig = protocolMap.get("dubbo");
         int threadCount = protocolConfig.getThreads();
-        listener.receiveServerMsg(env + ":" + threadCount);
+        listener.receiveServerMsg(env + ":" + threadCount + "," + Runtime.getRuntime().availableProcessors());
     }
 }
