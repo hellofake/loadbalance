@@ -62,7 +62,7 @@ public class CallbackListenerImpl implements CallbackListener {
                             rttWindow.refresh();
                         }
                     }
-                }, 10000, 50);
+                }, 10000, 10);
             }
         }
 
