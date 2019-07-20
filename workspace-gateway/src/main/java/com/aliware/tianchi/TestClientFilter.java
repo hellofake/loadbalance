@@ -84,7 +84,7 @@ public class TestClientFilter implements Filter {
             return result;
         }
         long rtt = System.currentTimeMillis() - stTime;
-        if(rtt>5000) return result;
+        if(rtt>500) return result;
         URL url = invoker.getUrl();
         int port = url.getPort();
         if (port == 20880) {
