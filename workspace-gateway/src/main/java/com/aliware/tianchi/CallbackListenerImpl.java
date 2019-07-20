@@ -1,5 +1,9 @@
 package com.aliware.tianchi;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
+import com.aliware.tianchi.rtt.RTTWindow;
 import org.apache.dubbo.rpc.listener.CallbackListener;
 
 import static com.aliware.tianchi.Constants.*;
@@ -12,7 +16,7 @@ import static com.aliware.tianchi.Constants.*;
  * 用户可以基于获取获取服务端的推送信息，与 CallbackService 搭配使用
  */
 public class CallbackListenerImpl implements CallbackListener {
-
+    private Timer timer = new Timer();
     public CallbackListenerImpl() { }
 
 
@@ -50,6 +54,15 @@ public class CallbackListenerImpl implements CallbackListener {
 
                 //线程参数初始化(直接在gateway统计)
                 threadCountInit = true;
+                startTime = System.currentTimeMillis();
+                timer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        for (RTTWindow rttWindow:rttWindows) {
+                            rttWindow.refresh();
+                        }
+                    }
+                }, 10000, 50);
             }
         }
 

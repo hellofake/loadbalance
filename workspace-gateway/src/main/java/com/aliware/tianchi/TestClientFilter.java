@@ -1,9 +1,15 @@
 package com.aliware.tianchi;
 
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Function;
+
+import com.aliware.tianchi.rtt.RTTWindow;
 import org.apache.dubbo.common.Constants;
 import org.apache.dubbo.common.URL;
 import org.apache.dubbo.common.extension.Activate;
+import org.apache.dubbo.remoting.exchange.support.DefaultFuture;
 import org.apache.dubbo.rpc.*;
+import org.apache.dubbo.rpc.protocol.dubbo.FutureAdapter;
 
 import static com.aliware.tianchi.Constants.*;
 
@@ -21,6 +27,8 @@ public class TestClientFilter implements Filter {
     public Result invoke(Invoker<?> invoker, Invocation invocation) throws RpcException {
         if (!threadCountInit) {
             Result result = invoker.invoke(invocation);
+            long startTime = System.currentTimeMillis();
+            ((SimpleAsyncRpcResult)(result)).getResultFuture().thenApplyAsync(r-> this.recordRTT(r,startTime,invoker));
             return result;
         }
         try {
@@ -40,6 +48,8 @@ public class TestClientFilter implements Filter {
                 longAdderLarge.decrement();
             }
             Result result = invoker.invoke(invocation);
+            long startTime = System.currentTimeMillis();
+            ((SimpleAsyncRpcResult)(result)).getResultFuture().thenApplyAsync(r-> this.recordRTT(r,startTime,invoker));
             return result;
         } catch (Exception e) {
             throw e;
@@ -63,6 +73,26 @@ public class TestClientFilter implements Filter {
             longAdderMedium.increment();
         } else {
             longAdderLarge.increment();
+        }
+        return result;
+    }
+    private Result recordRTT(Result result,long stTime,Invoker<?> invoker){
+        //if (!threadCountInit) {
+        //    return result;
+        //}
+        if (result.getResult() == null) {
+            return result;
+        }
+        long rtt = System.currentTimeMillis() - stTime;
+        if(rtt>5000) return result;
+        URL url = invoker.getUrl();
+        int port = url.getPort();
+        if (port == 20880) {
+            rttWindows[0].addRTT(stTime,rtt);
+        } else if (port == 20870) {
+            rttWindows[1].addRTT(stTime,rtt);
+        } else {
+            rttWindows[2].addRTT(stTime,rtt);
         }
         return result;
     }

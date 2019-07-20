@@ -29,10 +29,15 @@ public class RandomWithWeightStategy extends AbstractStrategy {
         int largeActiveCount = (int) longAdderLarge.longValue();
 
 
-        double small = (smallActiveCount == 0 ? 1 : smallActiveCount)*smallCPU;
-        double medium = (mediumActiveCount == 0 ? 1 : mediumActiveCount)*mediumCPU;
-        double large = (largeActiveCount == 0 ? 1 : largeActiveCount)*largeCPU;
-
+        double small = (smallActiveCount == 0 ? 1 : smallActiveCount)*smallCPU/rttWindows[0].getCurAvgRTT();
+        double medium = (mediumActiveCount == 0 ? 1 : mediumActiveCount)*mediumCPU/rttWindows[1].getCurAvgRTT();
+        double large = (largeActiveCount == 0 ? 1 : largeActiveCount)*largeCPU/rttWindows[2].getCurAvgRTT();
+        //double small = (smallActiveCount == 0 ? 1 : smallActiveCount)*smallCPU;
+        //double medium = (mediumActiveCount == 0 ? 1 : mediumActiveCount)*mediumCPU;
+        //double large = (largeActiveCount == 0 ? 1 : largeActiveCount)*largeCPU;
+        //System.out.println("small:"+small+"smallActiveCount:"+smallActiveCount+",smallCPU:"+smallCPU+"rtt:"+rttWindows[0].getCurAvgRTT());
+        //System.out.println("medium"+medium+"mediumActiveCount:"+mediumActiveCount+",mediumCPU:"+mediumCPU+"rtt:"+rttWindows[1].getCurAvgRTT());
+        //System.out.println("large"+large+"largeActiveCount:"+largeActiveCount+",largeCPU:"+largeCPU+"rtt:"+rttWindows[2].getCurAvgRTT());
         int randNumber = rand.nextInt((int)(small + medium + large));
 
         if (randNumber < small) {
