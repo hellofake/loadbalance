@@ -27,11 +27,13 @@ public class RandomWithWeightStategy extends AbstractStrategy {
         int smallActiveCount = (int) longAdderSmall.longValue();
         int mediumActiveCount = (int) longAdderMedium.longValue();
         int largeActiveCount = (int) longAdderLarge.longValue();
+        int smallRTTWeight = (int)(7500/rttWindows[0].getCurAvgRTT());
+        int mediumRTTWeight = (int)(7500/rttWindows[1].getCurAvgRTT());
+        int largeRTTWeight = (int)(7500/rttWindows[2].getCurAvgRTT());
 
-
-        double small = (smallActiveCount == 0 ? 1 : smallActiveCount)*smallCPU/rttWindows[0].getCurAvgRTT();
-        double medium = (mediumActiveCount == 0 ? 1 : mediumActiveCount)*mediumCPU/rttWindows[1].getCurAvgRTT();
-        double large = (largeActiveCount == 0 ? 1 : largeActiveCount)*largeCPU/rttWindows[2].getCurAvgRTT();
+        double small = (smallActiveCount == 0 ? 1 : smallActiveCount)*smallCPU*smallRTTWeight;
+        double medium = (mediumActiveCount == 0 ? 1 : mediumActiveCount)*mediumCPU*mediumRTTWeight;
+        double large = (largeActiveCount == 0 ? 1 : largeActiveCount)*largeCPU*largeRTTWeight;
         //double small = (smallActiveCount == 0 ? 1 : smallActiveCount)*smallCPU;
         //double medium = (mediumActiveCount == 0 ? 1 : mediumActiveCount)*mediumCPU;
         //double large = (largeActiveCount == 0 ? 1 : largeActiveCount)*largeCPU;
